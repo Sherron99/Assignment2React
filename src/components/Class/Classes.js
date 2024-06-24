@@ -10,7 +10,7 @@ function Classes() {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        axios.get(baseUrl + "Ass2/classes", {
+        axios.get(baseUrl + "Ass2/classes/", {
             headers: {
                 'Authorization': `Token ${token}`
             }

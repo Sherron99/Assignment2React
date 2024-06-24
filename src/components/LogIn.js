@@ -2,6 +2,7 @@ import {Fragment, useEffect, useState} from "react";
 import axios from "axios"; // 用于发出http请求的库
 import {baseUrl} from "./Constants";
 import {useNavigate} from "react-router-dom";
+import Lecturers from "./Lecturer/Lecturers";
 //这里的"../Constants"表示的是从Constants文件夹里获取到这个baseUrl
 //我们这样使用{baseUrl}的好处是，易于维护：如果 API 的基础 URL 发生变化，只需要修改一个地方，而不是修改代码中的每一个请求。避免重复代码：将基础 URL 提取出来，可以避免在每个请求中重复写 URL 的公共部分。
 
@@ -35,6 +36,8 @@ function LogIn(props) {
     const [password, passwordChanged] = useState("");
     const [hasToken, setHasToken] = useState(false);
     const navigate = useNavigate(); //useNavigate用于在应用程序中进行编程导航
+    const [students, setStudents] = useState([]);
+    const [lecturers, setLecturers] = useState([]);
 
     //useEffect(() => { ... }, [token]); 这是useEffect的语法结构
     //敲重点，在[]里面的东西就是我们需要实时跟踪的东西，如果[]的东西发生变化时，例如token发生变化时，我们就会调用useEffect里面的回调函数。
@@ -70,16 +73,58 @@ function LogIn(props) {
 
         console.log("Sending login request with payload:", loginPayload);
 
-        axios.post(baseUrl + '/auth/', loginPayload)
+        axios.post(baseUrl + 'auth/', loginPayload)
             .then(response => {
                 console.log("Login response:", response.data); // response will give us token
                 //为什么我们下面这行代码，我有加（response.data.）token。取决于服务器返回的数据格式例如有什么。它有返回token，我们才可以使用token
-                setToken(response.data.token); // assuming the token is in response.data.token
+                const newToken = response.data.token;
+                setToken(newToken);
                 setHasToken(true);
-                localStorage.setItem("token", response.data.token); // save token to localStorage
-                navigate("/Courses");
-                window.location.reload();
-            }).catch(error => {
+                localStorage.setItem("token", newToken); // save token to localStorage
+                //现在我就开始根据id来跳转到不同的页面。
+                return Promise.all([
+                    axios.get(`${baseUrl}Ass2/lecturers/`, {
+                        headers: {'Authorization': `Token ${newToken}`}
+                    }),
+                    axios.get(`${baseUrl}Ass2/students/`, {
+                        headers: {'Authorization': `Token ${newToken}`}
+                    })
+                ]);
+            })
+            .then(([lecturersResponse, studentsResponse]) => {
+                setLecturers(lecturersResponse.data);
+                setStudents(studentsResponse.data);
+
+                // 统一进行用户角色判断
+                if (username === "luoluo") {
+                    navigate("/Administor");
+                    return;
+                }
+
+                const lecturer = lecturersResponse.data.find(l =>
+                    username === (l.firstName + l.lastName).toLowerCase()
+                );
+                if (lecturer) {
+                    localStorage.setItem("id", lecturer.id.toString());
+                    navigate('/Lecturer');
+                    window.location.reload();
+                    return;
+                }
+
+                const student = studentsResponse.data.find(s =>
+                    username === (s.firstName + s.lastName).toLowerCase()
+                );
+                if (student) {
+                    localStorage.setItem("id", student.id.toString());
+                    navigate('/Student');
+                    window.location.reload();
+                    return;
+                }
+
+                // 如果没有匹配到任何角色
+                alert("User role not found. Please contact administrator.");
+            })
+            .catch(error => {
                 if (error.response) {
                     console.error('Error response:', error.response);
                     if (error.response.status === 400) {
@@ -97,11 +142,10 @@ function LogIn(props) {
     }
 
 
-
     function logout() {
         let login_token = localStorage.getItem("token");
         axios.get(
-            baseUrl + '/auth/logout/',
+            baseUrl + 'auth/logout/',
             {
                 headers: {
                     "Authorization": "Token " + login_token
@@ -110,6 +154,7 @@ function LogIn(props) {
         ).then(response => {
             console.log(response);
             localStorage.removeItem("token");
+            localStorage.removeItem("id");
             setToken("");
             setHasToken(false);
             navigate("/");

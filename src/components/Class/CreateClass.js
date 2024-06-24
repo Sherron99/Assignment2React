@@ -1,0 +1,132 @@
+import React, {useEffect, useState} from 'react';
+import axios from "axios";
+import {baseUrl} from "../Constants";
+import {useNavigate} from "react-router-dom";
+
+function CreateClass(props) {
+    const [token] = useState(localStorage.getItem("token"));
+    const [number, setNumber] = useState('');
+    const [courses, setCourses] = useState([]);
+    const [semesters, setSemesters] = useState([]);
+    const [lecturers, setLecturers] = useState([]);
+    const [students, setStudents] = useState([]);
+
+    const [selectedStudents, setSelectedStudents] = useState([]);
+    const [selectedCourse, setSelectedCourse] = useState('');
+    const [selectedSemester, setSelectedSemester] = useState('');
+    const [selectedLecturer, setSelectedLecturer] = useState('');
+    const navigate = useNavigate();
+
+
+    useEffect(() => {
+        axios.get(`${baseUrl}Ass2/courses/`, {
+            headers: {
+                'Authorization': `Token ${token}`
+            }
+        }).then(response => {
+            setCourses(response.data);
+        });
+        axios.get(`${baseUrl}Ass2/semesters/`, {
+            headers: {
+                'Authorization': `Token ${token}`
+            }
+        }).then(response => {
+            setSemesters(response.data);
+        });
+        axios.get(`${baseUrl}Ass2/lecturers/`, {
+            headers: {
+                'Authorization': `Token ${token}`
+            }
+        }).then(response => {
+            setLecturers(response.data);
+        });
+        axios.get(`${baseUrl}Ass2/students/`, {
+            headers: {
+                'Authorization': `Token ${token}`
+            }
+        }).then(response => {
+            setStudents(response.data);
+        });
+    }, [token]);
+
+    function handleStudentChange(event) {
+        const studentId = parseInt(event.target.value);
+        if (event.target.checked) {
+            setSelectedStudents([...selectedStudents, studentId]);
+        } else {
+            setSelectedStudents(selectedStudents.filter(id => id !== studentId));
+        }
+    }
+
+    function numberValue(e) {
+        setNumber(e.target.value);
+    }
+
+    function createClass() {
+        if(!selectedLecturer){
+            alert("Please assign a lecturer to the class");
+            return;
+        }
+        axios.post(`${baseUrl}Ass2/classes/`, {
+            number: number,
+            course: selectedCourse,
+            semester: selectedSemester,
+            lecturer: selectedLecturer,
+            students: selectedStudents
+        }, {
+            headers: {
+                'Authorization': `Token ${token}`
+            }
+        }).then(response => {
+            alert("Class created successfully");
+            navigate("/Class");
+            window.location.reload();
+            console.log(response.data);
+        });
+    }
+
+    return (
+        <div>
+            <p>Create a Class</p>
+            <p>Number: <input type="text" value={number} onChange={numberValue}/></p>
+            <p>Course:
+                <select value={selectedCourse} onChange={(e) => setSelectedCourse(e.target.value)}>
+                    {courses.map((course) => (
+                        <option key={course.id} value={course.id}>{course.name}</option>
+                    ))}
+                </select>
+            </p>
+            <p>Semester:
+                <select value={selectedSemester} onChange={(e) => setSelectedSemester(e.target.value)}>
+                    {semesters.map((semester) => (
+                        <option key={semester.id} value={semester.id}>{semester.year} {semester.semester}</option>
+                    ))}
+                </select>
+            </p>
+            <p>Lecturer:
+                <select value={selectedLecturer} onChange={(e) => setSelectedLecturer(e.target.value)}>
+                    <option value="">Please select a Lecturer</option>
+                    {lecturers.map((lecturer) => (
+                        <option key={lecturer.id} value={lecturer.id}>{lecturer.firstName} {lecturer.lastName}</option>
+                    ))}
+                </select>
+            </p>
+            <p>Students:</p>
+            {students.map((student) => (
+                <div key={student.id}>
+                    <input
+                        type="checkbox"
+                        id={`${student.id}`}
+                        value={student.id}
+                        onChange={handleStudentChange}
+                        checked={selectedStudents.includes(student.id)}//这里的checked适用于radio和checkbox，如果有包含那就说明被选中了
+                    />
+                    <label htmlFor={`student-${student.id}`}>{student.firstName} {student.lastName}</label>
+                </div>
+            ))}
+            <button onClick={createClass} className={"btn btn-primary"}>Create</button>
+        </div>
+    );
+}
+
+export default CreateClass;
