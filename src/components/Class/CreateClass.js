@@ -67,7 +67,7 @@ function CreateClass(props) {
             alert("Please assign a lecturer to the class");
             return;
         }
-        axios.post(`${baseUrl}Ass2/classes/`, {
+        axios.post(`${baseUrl}classes/`, {
             number: number,
             course: selectedCourse,
             semester: selectedSemester,
