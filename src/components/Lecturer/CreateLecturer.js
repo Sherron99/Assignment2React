@@ -30,7 +30,7 @@ function CreateLecturer(props) {
         }
         const createUser = {
             username: firstName + lastName,
-            password: DOB,
+            password: "unitec123",
             first_name: firstName,
             last_name: lastName,
             email: email,

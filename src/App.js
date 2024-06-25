@@ -49,7 +49,7 @@ function App() {
                 <Route path="/SemesterDetail" element={<SemesterDetail/>}/>
                 <Route path="/CreateSemester" element={<CreateSemester/>}/>
                 <Route path="/UpdateSemester" element={<UpdateSemester/>}/>
-                <Route path="/Class" element={<Classes/>}/>
+                <Route path="/Classes" element={<Classes/>}/>
                 <Route path="/CreateClass" element={<CreateClass/>}/>
                 <Route path="/UpdateClass" element={<UpdateClass/>}/>
                 <Route path="/ClassDetail" element={<ClassDetail/>}/>

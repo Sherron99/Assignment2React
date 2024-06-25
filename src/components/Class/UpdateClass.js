@@ -51,7 +51,7 @@ function UpdateClass(props) {
         }).catch(error => {
             console.error('Error fetching class data:', error.response ? error.response.data : error.message);
             alert("Failed to fetch class data");
-            navigate('/Class');
+            navigate('/Classes');
         });
 
         // 下面这几个都是为了让用户修改的时候供选择
@@ -137,7 +137,7 @@ function UpdateClass(props) {
             }
         }).then(response => {
             alert("Class updated successfully");
-            navigate('/Class');
+            navigate('/Classes');
         }).catch(error => {
             console.error('Error updating class:', error);
             if (error.response) {
