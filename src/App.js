@@ -28,6 +28,7 @@ import ClassDetail from "./components/Class/ClassDetail";
 import Lecturer from "./components/Lecturer";
 import Student from "./components/Student";
 import Administor from "./components/Administor";
+import UploadExcel from "./UploadExcel";
 
 
 function App() {
@@ -61,6 +62,7 @@ function App() {
                 <Route path="/CreateStudent" element={<CreateStudent/>}/>
                 <Route path="/UpdateStudent" element={<UpdateStudent/>}/>
                 <Route path="/StudentDetail" element={<StudentDetail/>}/>
+                <Route path="/UploadExcel" element={<UploadExcel/>}/>
             </Routes>
         </div>
     );
