@@ -4,7 +4,7 @@ import * as XLSX from 'xlsx';
 import axios from 'axios';
 import { baseUrl } from './Constants';
 import { useNavigate } from "react-router-dom";
-import { format } from 'date-fns'; // 使用 date-fns 库来格式化日期
+import { format } from 'date-fns';
 
 const UploadExcel = () => {
   const [data, setData] = useState([]);
@@ -35,6 +35,8 @@ const UploadExcel = () => {
     return format(parsedDate, 'yyyy-MM-dd');
   };
 
+  //下面的代码一定要注意，student.firstname和student.lastname，student后的名称必须是要和excel里的名称是一样的才行。
+  //还遇到的一个问题是，DOB的日期格式不对，所以我们是需要安装一个npm install date-fns包。
   const handleSubmit = async () => {
     try {
       for (const student of data) {
@@ -47,26 +49,27 @@ const UploadExcel = () => {
           groups: [6] // 6 for student
         };
 
-        console.log("Creating user with data:", user); // 打印调试信息
+        console.log("Creating user with data:", user);
 
         const userResponse = await axios.post(`${baseUrl}Ass2/users/`, user, {
           headers: {
+            Authorization: `Token ${token}`,
             'Content-Type': 'application/json'
           }
         });
 
-        console.log('User created:', userResponse.data); // 打印 userResponse
+        console.log('User created:', userResponse.data);
 
         const userId = userResponse.data.id;
         const studentData = {
           firstName: student.firstname,
           lastName: student.lastname,
           email: student.email,
-          DOB: formatDOB(student.DOB), // 格式化 DOB 字段
+          DOB: formatDOB(student.DOB),
           user: userId
         };
 
-        console.log("Creating student with data:", studentData); // 打印调试信息
+        console.log("Creating student with data:", studentData);
 
         const studentResponse = await axios.post(`${baseUrl}Ass2/students/`, studentData, {
           headers: {
@@ -75,7 +78,7 @@ const UploadExcel = () => {
           }
         });
 
-        console.log('Student created:', studentResponse.data); // 打印 studentResponse
+        console.log('Student created:', studentResponse.data);
       }
 
       alert('Students successfully created!');
