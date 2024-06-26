@@ -38,7 +38,7 @@ const UploadExcel = () => {
           first_name: student.firstName,
           last_name: student.lastName,
           email: student.email,
-          groups: [3] // 3 for student
+          groups: [6] // 3 for student
         };
 
         const userResponse = await axios.post(`${baseUrl}Ass2/users/`, user, {
