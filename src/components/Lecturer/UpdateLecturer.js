@@ -54,7 +54,7 @@ function UpdateLecturer(props) {
             .then((response) => {
                 console.log(response.data);
                 alert("Lecturer updated successfully");
-                navigate('/Lecturer');
+                navigate('/Lecturers');
             }).catch((error) => {
                 console.log(error);
             });

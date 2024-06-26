@@ -60,7 +60,7 @@ function CreateLecturer(props) {
                 })
                     .then(response => {
                         alert("Lecturer created");
-                        navigate("/Lecturer");
+                        navigate("/Lecturers");
                         window.location.reload();
                     })
                     .catch(error => {

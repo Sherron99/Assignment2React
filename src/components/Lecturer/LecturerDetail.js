@@ -16,7 +16,7 @@ function LecturerDetail(props) {
             return;
         }
 
-        axios.get(`${baseUrl}/Ass2/lecturers/${lecturer_id}/`, {
+        axios.get(`${baseUrl}Ass2/lecturers/${lecturer_id}/`, {
             headers: {
                 'Authorization': `Token ${token}`
             }
@@ -41,7 +41,7 @@ function LecturerDetail(props) {
                     }
                 }).then((response) => {
                     alert("Lecturer and user deleted successfully");
-                    navigate('/Lecturer');
+                    navigate('/Lecturers');
                     window.location.reload();
                 }).catch((error) => {
                     alert("Failed to delete user");
