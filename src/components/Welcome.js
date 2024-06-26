@@ -22,6 +22,15 @@ function Welcome(props) {
     return (
 <div>
     <p>Welcome to This Page</p>
+    <p>SuperUser:</p>
+    <p>luoluo</p>
+    <p>Unitec123</p>
+    <p>Lecturer:</p>
+    <p>songlei</p>
+    <p>unitec123</p>
+    <p>Student:</p>
+    <p>xiaomei</p>
+    <p>unitec123</p>
 </div>
     );
 }
