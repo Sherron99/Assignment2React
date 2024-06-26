@@ -88,11 +88,11 @@ function Lecturer(props) {
                             />
                         </li>
                     ))}
+                    <button onClick={handleSubmit}>Submit</button>
                 </ul>
             ) : (
                 <p>No students enrolled.</p>
             )}
-            <button onClick={handleSubmit}>Submit</button>
         </div>
     );
 }
