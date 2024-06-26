@@ -16,7 +16,7 @@ function StudentDetail(props) {
             return;
         }
 
-        axios.get(`${baseUrl}Ass2/students/${student_id}`, {
+        axios.get(`${baseUrl}Ass2/students/${student_id}/`, {
             headers: {
                 'Authorization': `Token ${token}`
             }
@@ -29,7 +29,7 @@ function StudentDetail(props) {
 
     function deleteStudent() {
         if (window.confirm("Are you sure you want to delete this student?")) {
-        axios.delete(`${baseUrl}Ass2/students/${student_id}`, {
+        axios.delete(`${baseUrl}Ass2/students/${student_id}/`, {
             headers: {
                 'Authorization': `Token ${token}`
             }
@@ -41,7 +41,7 @@ function StudentDetail(props) {
                 }
                 }).then((response) => {
                     alert("Lecturer and user deleted successfully");
-                    navigate('/Student');
+                    navigate('/Students');
                     window.location.reload();
                 }).catch((error) => {
                     alert("Failed to delete user");

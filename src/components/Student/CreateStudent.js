@@ -60,7 +60,7 @@ function CreateStudent(props) {
             });
         }).then(response => {
             alert("Student created successfully");
-            navigate("/Student");
+            navigate("/Students");
             window.location.reload();
         }).catch(error => {
             console.error('Error creating student:', error.response ? error.response.data : error.message);

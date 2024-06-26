@@ -52,7 +52,7 @@ function UpdateStudent(props) {
                 }
             }).then((response) => {
                 alert("Student updated successfully");
-                navigate('/Student');
+                navigate('/Students');
             })
         }).catch((error) => {
             alert("Failed to update");
