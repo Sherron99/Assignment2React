@@ -4,6 +4,7 @@ import * as XLSX from 'xlsx';
 import axios from 'axios';
 import { baseUrl } from './Constants';
 import { useNavigate } from "react-router-dom";
+import { format } from 'date-fns'; // 使用 date-fns 库来格式化日期
 
 const UploadExcel = () => {
   const [data, setData] = useState([]);
@@ -29,17 +30,24 @@ const UploadExcel = () => {
     },
   });
 
+  const formatDOB = (dob) => {
+    const parsedDate = new Date(dob);
+    return format(parsedDate, 'yyyy-MM-dd');
+  };
+
   const handleSubmit = async () => {
     try {
       for (const student of data) {
         const user = {
-          username: student.firstname + student.lastname,
+          username: student.firstName + student.lastName,
           password: "unitec123",
           first_name: student.firstName,
           last_name: student.lastName,
           email: student.email,
-          groups: [6] // 3 for student
+          groups: [6] // 6 for student
         };
+
+        console.log("Creating user with data:", user); // 打印调试信息
 
         const userResponse = await axios.post(`${baseUrl}Ass2/users/`, user, {
           headers: {
@@ -47,29 +55,40 @@ const UploadExcel = () => {
           }
         });
 
+        console.log('User created:', userResponse.data); // 打印 userResponse
+
         const userId = userResponse.data.id;
         const studentData = {
-          firstName: student.firstname,
-          lastName: student.lastname,
+          firstName: student.firstName,
+          lastName: student.lastName,
           email: student.email,
-          DOB: student.DOB,
+          DOB: formatDOB(student.DOB), // 格式化 DOB 字段
           user: userId
         };
 
-        await axios.post(`${baseUrl}Ass2/students/`, studentData, {
+        console.log("Creating student with data:", studentData); // 打印调试信息
+
+        const studentResponse = await axios.post(`${baseUrl}Ass2/students/`, studentData, {
           headers: {
             Authorization: `Token ${token}`,
             'Content-Type': 'application/json'
           }
         });
+
+        console.log('Student created:', studentResponse.data); // 打印 studentResponse
       }
 
       alert('Students successfully created!');
       navigate("/Students");
       window.location.reload();
     } catch (error) {
-      console.error('Error creating students:', error.response ? error.response.data : error.message);
-      alert('Error creating students!');
+      if (error.response) {
+        console.error('Error creating students:', error.response.data);
+        alert(`Error creating students: ${JSON.stringify(error.response.data)}`);
+      } else {
+        console.error('Error:', error.message);
+        alert('Error creating students!');
+      }
     }
   };
 
