@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {baseUrl} from "./Constants";
+import React, { useEffect, useState } from 'react';
+import { baseUrl } from "./Constants";
 import axios from "axios";
 
 function Student(props) {
@@ -72,7 +72,7 @@ function Student(props) {
                     <ul>
                         {enrollments.map(enrollment => (
                             <li key={enrollment.id}>
-                                {enrollment.course.name} - Grade: {enrollment.grade} -
+                                {enrollment.course.name} - Grade: {enrollment.grade == null ? 'N/A' : enrollment.grade} -
                                 Semester: {enrollment.semester.year} {enrollment.semester.semester}
                             </li>
                         ))}
