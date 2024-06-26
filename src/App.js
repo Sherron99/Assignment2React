@@ -28,7 +28,7 @@ import ClassDetail from "./components/Class/ClassDetail";
 import Lecturer from "./components/Lecturer";
 import Student from "./components/Student";
 import Administor from "./components/Administor";
-import UploadExcel from "./UploadExcel";
+import UploadExcel from "./components/UploadExcel";
 
 
 function App() {

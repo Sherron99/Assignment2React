@@ -1,7 +1,8 @@
-// UploadExcel.js
 import React, { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import * as XLSX from 'xlsx';
+import axios from 'axios';
+import { baseUrl } from './Constants';
 
 const UploadExcel = () => {
   const [data, setData] = useState([]);
@@ -24,6 +25,21 @@ const UploadExcel = () => {
     },
   });
 
+  const handleSubmit = async () => {
+    try {
+      // 发送Excel数据到后端API
+      const response = await axios.post(`${baseUrl}students/batch`, data, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      alert('Data successfully submitted!');
+    } catch (error) {
+      console.error('Error submitting data:', error);
+      alert('Error submitting data!');
+    }
+  };
+
   return (
     <div>
       <div {...getRootProps()} style={styles.dropzone}>
@@ -31,24 +47,27 @@ const UploadExcel = () => {
         <p>Drag 'n' drop an Excel file here, or click to select one</p>
       </div>
       {data.length > 0 && (
-        <table style={styles.table}>
-          <thead>
-            <tr>
-              {Object.keys(data[0]).map((key) => (
-                <th key={key}>{key}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {data.map((row, index) => (
-              <tr key={index}>
-                {Object.values(row).map((cell, i) => (
-                  <td key={i}>{cell}</td>
+        <div>
+          <table style={styles.table}>
+            <thead>
+              <tr>
+                {Object.keys(data[0]).map((key) => (
+                  <th key={key}>{key}</th>
                 ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {data.map((row, index) => (
+                <tr key={index}>
+                  {Object.values(row).map((cell, i) => (
+                    <td key={i}>{cell}</td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <button onClick={handleSubmit} style={styles.button}>Submit</button>
+        </div>
       )}
     </div>
   );
@@ -76,6 +95,15 @@ const styles = {
   td: {
     border: '1px solid #ddd',
     padding: '8px',
+  },
+  button: {
+    marginTop: '20px',
+    padding: '10px 20px',
+    backgroundColor: '#007bff',
+    color: 'white',
+    border: 'none',
+    borderRadius: '5px',
+    cursor: 'pointer',
   },
 };
 

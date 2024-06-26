@@ -107,7 +107,7 @@ function CreateClass(props) {
             <p>Course:
                 {/*e在下面这行代码中，表示的是event。*/}
                 <select value={selectedCourse} onChange={(e) => setSelectedCourse(e.target.value)}>
-                    <option value="">Please select a Lecturer</option>
+                    <option value="">Please select a course</option>
                     {courses.map((course) => (
                         <option key={course.id} value={course.id}>{course.name}</option>
                     ))}
@@ -115,7 +115,7 @@ function CreateClass(props) {
             </p>
             <p>Semester:
                 <select value={selectedSemester} onChange={(e) => setSelectedSemester(e.target.value)}>
-                    <option value="">Please select a Lecturer</option>
+                    <option value="">Please select a semester</option>
                     {semesters.map((semester) => (
                         <option key={semester.id} value={semester.id}>{semester.year} {semester.semester}</option>
                     ))}
