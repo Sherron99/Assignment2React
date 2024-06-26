@@ -1,9 +1,9 @@
+import { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import {useEffect, useState} from "react";
-import { useNavigate } from 'react-router-dom';
 
 function BasicExample() {
     const [token, setToken] = useState("");
@@ -16,36 +16,38 @@ function BasicExample() {
         const storedUserRole = localStorage.getItem("userRole");
         console.log("Stored token:", storedToken);
         console.log("Stored user role:", storedUserRole);
-        if(storedToken) {
+        if (storedToken) {
             setToken(storedToken);
             setHasToken(true);
+        }
+        if (storedUserRole) {
             setUserRole(storedUserRole);
         }
     }, []);
 
-        console.log("Current user role:", userRole);
-
-const handleHomeClick = (e) => {
-    e.preventDefault();
     console.log("Current user role:", userRole);
-    switch(userRole) {
-        case "administor":
-            console.log("Navigating to /Administor");
-            navigate("/Administor");
-            break;
-        case "student":
-            console.log("Navigating to /Student");
-            navigate("/Student");
-            break;
-        case "lecturer":
-            console.log("Navigating to /Lecturer");
-            navigate("/Lecturer");
-            break;
-        default:
-            console.log("Navigating to /");
-            navigate("/");
-    }
-};
+
+    const handleHomeClick = (e) => {
+        e.preventDefault();
+        console.log("Current user role:", userRole);
+        switch(userRole) {
+            case "administor":
+                console.log("Navigating to /Administor");
+                navigate("/Administor");
+                break;
+            case "student":
+                console.log("Navigating to /Student");
+                navigate("/Student");
+                break;
+            case "lecturer":
+                console.log("Navigating to /Lecturer");
+                navigate("/Lecturer");
+                break;
+            default:
+                console.log("Navigating to /");
+                navigate("/");
+        }
+    };
 
     return (
         <Navbar expand="lg" className="bg-body-tertiary">
