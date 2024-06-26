@@ -3,9 +3,13 @@ import { useDropzone } from 'react-dropzone';
 import * as XLSX from 'xlsx';
 import axios from 'axios';
 import { baseUrl } from './Constants';
+import { useNavigate } from "react-router-dom";
 
 const UploadExcel = () => {
   const [data, setData] = useState([]);
+  const [token] = useState(localStorage.getItem("token"));
+  const navigate = useNavigate();
+
   const { getRootProps, getInputProps } = useDropzone({
     accept: '.xlsx, .xls',
     onDrop: (acceptedFiles) => {
@@ -27,16 +31,45 @@ const UploadExcel = () => {
 
   const handleSubmit = async () => {
     try {
-      // 发送Excel数据到后端API
-      const response = await axios.post(`${baseUrl}students/batch`, data, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      alert('Data successfully submitted!');
+      for (const student of data) {
+        const user = {
+          username: student.firstName + student.lastName,
+          password: student.DOB,
+          first_name: student.firstName,
+          last_name: student.lastName,
+          email: student.email,
+          groups: [3] // 3 for student
+        };
+
+        const userResponse = await axios.post(`${baseUrl}Ass2/users/`, user, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+
+        const userId = userResponse.data.id;
+        const studentData = {
+          firstName: student.firstName,
+          lastName: student.lastName,
+          email: student.email,
+          DOB: student.DOB,
+          user: userId
+        };
+
+        await axios.post(`${baseUrl}Ass2/students/`, studentData, {
+          headers: {
+            Authorization: `Token ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+      }
+
+      alert('Students successfully created!');
+      navigate("/Students");
+      window.location.reload();
     } catch (error) {
-      console.error('Error submitting data:', error);
-      alert('Error submitting data!');
+      console.error('Error creating students:', error.response ? error.response.data : error.message);
+      alert('Error creating students!');
     }
   };
 
@@ -52,7 +85,7 @@ const UploadExcel = () => {
             <thead>
               <tr>
                 {Object.keys(data[0]).map((key) => (
-                  <th key={key}>{key}</th>
+                  <th key={key} style={styles.th}>{key}</th>
                 ))}
               </tr>
             </thead>
@@ -60,13 +93,13 @@ const UploadExcel = () => {
               {data.map((row, index) => (
                 <tr key={index}>
                   {Object.values(row).map((cell, i) => (
-                    <td key={i}>{cell}</td>
+                    <td key={i} style={styles.td}>{cell}</td>
                   ))}
                 </tr>
               ))}
             </tbody>
           </table>
-          <button onClick={handleSubmit} style={styles.button}>Submit</button>
+          <button onClick={handleSubmit} style={styles.button}>Create Students</button>
         </div>
       )}
     </div>
@@ -80,11 +113,12 @@ const styles = {
     padding: '20px',
     textAlign: 'center',
     cursor: 'pointer',
+    marginBottom: '20px',
   },
   table: {
     width: '100%',
     borderCollapse: 'collapse',
-    marginTop: '20px',
+    marginBottom: '20px',
   },
   th: {
     border: '1px solid #ddd',
@@ -97,7 +131,6 @@ const styles = {
     padding: '8px',
   },
   button: {
-    marginTop: '20px',
     padding: '10px 20px',
     backgroundColor: '#007bff',
     color: 'white',
