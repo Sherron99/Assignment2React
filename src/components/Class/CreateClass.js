@@ -62,6 +62,7 @@ function CreateClass(props) {
         setNumber(e.target.value);
     }
 
+    //下面遇到了一个问题，就是如果用户什么都不做选择，直接用的是跳出来的默认值，就会显示那个地方的value是空。
     function createClass() {
         if (!selectedLecturer) {
             alert("Please assign a lecturer to the class");
@@ -82,7 +83,6 @@ function CreateClass(props) {
             lecturer: selectedLecturer,
             students: selectedStudents
         };
-        console.log("Sending data:", classData); // 打印要发送的数据
 
         axios.post(`${baseUrl}Ass2/classes/`, classData, {
             headers: {
@@ -105,6 +105,7 @@ function CreateClass(props) {
             <p>Create a Class</p>
             <p>Number: <input type="text" value={number} onChange={numberValue}/></p>
             <p>Course:
+                {/*e在下面这行代码中，表示的是event。*/}
                 <select value={selectedCourse} onChange={(e) => setSelectedCourse(e.target.value)}>
                     <option value="">Please select a Lecturer</option>
                     {courses.map((course) => (
