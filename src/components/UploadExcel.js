@@ -39,10 +39,10 @@ const UploadExcel = () => {
     try {
       for (const student of data) {
         const user = {
-          username: student.firstName + student.lastName,
+          username: student.firstname + student.lastname,
           password: "unitec123",
-          first_name: student.firstName,
-          last_name: student.lastName,
+          first_name: student.firstname,
+          last_name: student.lastname,
           email: student.email,
           groups: [6] // 6 for student
         };
@@ -59,8 +59,8 @@ const UploadExcel = () => {
 
         const userId = userResponse.data.id;
         const studentData = {
-          firstName: student.firstName,
-          lastName: student.lastName,
+          firstName: student.firstname,
+          lastName: student.lastname,
           email: student.email,
           DOB: formatDOB(student.DOB), // 格式化 DOB 字段
           user: userId
