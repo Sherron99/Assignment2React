@@ -9,12 +9,10 @@ function NavigationBar() {
     const [hasToken, setHasToken] = useState(false);
     const [userRole, setUserRole] = useState("");
     const navigate = useNavigate();
+    const storedToken = localStorage.getItem("token");
+    const storedUserRole = localStorage.getItem("userRole");
 
     useEffect(() => {
-        const storedToken = localStorage.getItem("token");
-        const storedUserRole = localStorage.getItem("userRole");
-        console.log("Stored token:", storedToken);
-        console.log("Stored user role:", storedUserRole);
         if (storedToken) {
             setToken(storedToken);
             setHasToken(true);
@@ -23,7 +21,7 @@ function NavigationBar() {
             setUserRole(storedUserRole);
             console.log("Setting user role to:", storedUserRole);
         }
-    }, []);
+    }, [storedToken, storedUserRole]);
 
     useEffect(() => {
         console.log("User role updated:", userRole);
