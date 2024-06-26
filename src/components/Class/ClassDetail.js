@@ -18,7 +18,7 @@ function ClassDetail(props) {
     useEffect(() => {
         if (!class_id) {
             alert("No class ID provided");
-            navigate('/Class');
+            navigate('/Classes');
             return;
         }
 
@@ -42,7 +42,7 @@ function ClassDetail(props) {
         }).catch(error => {
             console.error('Error fetching class data:', error.response ? error.response.data : error.message);
             alert("Failed to fetch class data");
-            navigate('/Class');
+            navigate('/Classes');
         });
     }, [class_id, token, navigate]);
 
@@ -54,7 +54,7 @@ function ClassDetail(props) {
                 }
             }).then(response => {
                 alert("Class deleted successfully");
-                navigate('/Class');
+                navigate('/Classes');
             }).catch(error => {
                 console.error('Error deleting class:', error.response ? error.response.data : error.message);
                 alert("Failed to delete class");
