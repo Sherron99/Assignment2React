@@ -97,6 +97,7 @@ function LogIn(props) {
 
                 // 统一进行用户角色判断
                 if (username === "luoluo") {
+                    localStorage.setItem("userRole", "administor");
                     navigate("/Administor");
                     return;
                 }
@@ -106,6 +107,7 @@ function LogIn(props) {
                 );
                 if (lecturer) {
                     localStorage.setItem("id", lecturer.id.toString());
+                    localStorage.setItem("userRole", "lecturer");
                     navigate('/Lecturer');
                     window.location.reload();
                     return;
@@ -116,6 +118,7 @@ function LogIn(props) {
                 );
                 if (student) {
                     localStorage.setItem("id", student.id.toString());
+                    localStorage.setItem("userRole", "student");
                     navigate('/Student');
                     window.location.reload();
                     return;
