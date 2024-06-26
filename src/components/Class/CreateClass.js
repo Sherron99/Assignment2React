@@ -62,35 +62,43 @@ function CreateClass(props) {
         setNumber(e.target.value);
     }
 
-function createClass() {
-    if(!selectedLecturer){
-        alert("Please assign a lecturer to the class");
-        return;
-    }
-    const classData = {
-        number: number,
-        course: selectedCourse,
-        semester: selectedSemester,
-        lecturer: selectedLecturer,
-        students: selectedStudents
-    };
-    console.log("Sending data:", classData); // 打印要发送的数据
-
-    axios.post(`${baseUrl}Ass2/classes/`, classData, {
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Token ${token}`
+    function createClass() {
+        if (!selectedLecturer) {
+            alert("Please assign a lecturer to the class");
+            return;
         }
-    }).then(response => {
-        alert("Class created successfully");
-        navigate("/Class");
-        window.location.reload();
-        console.log(response.data);
-    }).catch(error => {
-        console.error("Error creating class:", error.response?.data || error.message);
-        alert("Failed to create class. Please check the console for details.");
-    });
-}
+        if (!selectedSemester) {
+            alert("Please assign a lecturer to the class");
+            return;
+        }
+        if (!selectedCourse) {
+            alert("Please assign a lecturer to the class");
+            return;
+        }
+        const classData = {
+            number: number,
+            course: selectedCourse,
+            semester: selectedSemester,
+            lecturer: selectedLecturer,
+            students: selectedStudents
+        };
+        console.log("Sending data:", classData); // 打印要发送的数据
+
+        axios.post(`${baseUrl}Ass2/classes/`, classData, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Token ${token}`
+            }
+        }).then(response => {
+            alert("Class created successfully");
+            navigate("/Classes");
+            window.location.reload();
+            console.log(response.data);
+        }).catch(error => {
+            console.error("Error creating class:", error.response?.data || error.message);
+            alert("Failed to create class. Please check the console for details.");
+        });
+    }
 
     return (
         <div>
@@ -98,6 +106,7 @@ function createClass() {
             <p>Number: <input type="text" value={number} onChange={numberValue}/></p>
             <p>Course:
                 <select value={selectedCourse} onChange={(e) => setSelectedCourse(e.target.value)}>
+                    <option value="">Please select a Lecturer</option>
                     {courses.map((course) => (
                         <option key={course.id} value={course.id}>{course.name}</option>
                     ))}
@@ -105,6 +114,7 @@ function createClass() {
             </p>
             <p>Semester:
                 <select value={selectedSemester} onChange={(e) => setSelectedSemester(e.target.value)}>
+                    <option value="">Please select a Lecturer</option>
                     {semesters.map((semester) => (
                         <option key={semester.id} value={semester.id}>{semester.year} {semester.semester}</option>
                     ))}
