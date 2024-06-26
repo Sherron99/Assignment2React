@@ -16,7 +16,7 @@ function LecturerDetail(props) {
             return;
         }
 
-        axios.get(`${baseUrl}/Ass2/lecturers/${lecturer_id}`, {
+        axios.get(`${baseUrl}/Ass2/lecturers/${lecturer_id}/`, {
             headers: {
                 'Authorization': `Token ${token}`
             }
@@ -29,13 +29,13 @@ function LecturerDetail(props) {
 
     function deleteLecturer() {
         if (window.confirm("Are you sure you want to delete this lecturer?")) {
-            axios.delete(`${baseUrl}/Ass2/lecturers/${lecturer_id}`, {
+            axios.delete(`${baseUrl}Ass2/lecturers/${lecturer_id}/`, {
                 headers: {
                     'Authorization': `Token ${token}`
                 }
             }).then((response) => {
                 const user_id = lecturer.user; // 获取关联的用户ID
-                axios.delete(`${baseUrl}/Ass2/users/${user_id}`, {
+                axios.delete(`${baseUrl}Ass2/users/${user_id}/`, {
                     headers: {
                         'Authorization': `Token ${token}`
                     }

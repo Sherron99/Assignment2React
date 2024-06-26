@@ -37,7 +37,7 @@ function CreateLecturer(props) {
             groups: [2]
         }
 
-        axios.post(`${baseUrl}/Ass2/users/`, createUser, { //这里忘记在baseurl和Ass2之间加/
+        axios.post(`${baseUrl}Ass2/users/`, createUser, { //这里忘记在baseurl和Ass2之间加/
             headers: {
                     'Content-Type': 'application/json'
             }
