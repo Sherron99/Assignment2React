@@ -73,7 +73,6 @@ function NavigationBar() {
                     </Nav>
                 </Navbar.Collapse>
             </Container>
-            <div>Current User Role: {userRole}</div>
         </Navbar>
     );
 }
