@@ -20,22 +20,27 @@ function BasicExample() {
         }
     }, [token]);
 
-    const handleHomeClick = (e) => {
-        e.preventDefault();
-        switch(userRole) {
-            case "administor":
-                navigate("/Administor");
-                break;
-            case "student":
-                navigate("/Student");
-                break;
-            case "lecturer":
-                navigate("/Lecturer");
-                break;
-            default:
-                navigate("/");
-        }
-    };
+const handleHomeClick = (e) => {
+    e.preventDefault();
+    console.log("Current user role:", userRole);
+    switch(userRole) {
+        case "administor":
+            console.log("Navigating to /Administor");
+            navigate("/Administor");
+            break;
+        case "student":
+            console.log("Navigating to /Student");
+            navigate("/Student");
+            break;
+        case "lecturer":
+            console.log("Navigating to /Lecturer");
+            navigate("/Lecturer");
+            break;
+        default:
+            console.log("Navigating to /");
+            navigate("/");
+    }
+};
 
     return (
         <Navbar expand="lg" className="bg-body-tertiary">
