@@ -34,7 +34,7 @@ function CreateLecturer(props) {
             first_name: firstName,
             last_name: lastName,
             email: email,
-            groups: [2]
+            groups: [5]
         }
 
         axios.post(`${baseUrl}Ass2/users/`, createUser, { //这里忘记在baseurl和Ass2之间加/

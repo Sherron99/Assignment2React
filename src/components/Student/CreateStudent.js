@@ -35,7 +35,7 @@ function CreateStudent(props) {
             first_name: firstName,
             last_name: lastName,
             email: email,
-            groups: [6] // 6 for student, 2 for teacher
+            groups: [6] // 6 for student, 5 for teacher
         };
 
         axios.post(`${baseUrl}Ass2/users/`, user, {
