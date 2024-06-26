@@ -1,11 +1,10 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
 
-function BasicExample() {
+function NavigationBar() {
     const [token, setToken] = useState("");
     const [hasToken, setHasToken] = useState(false);
     const [userRole, setUserRole] = useState("");
@@ -22,10 +21,13 @@ function BasicExample() {
         }
         if (storedUserRole) {
             setUserRole(storedUserRole);
+            console.log("Setting user role to:", storedUserRole);
         }
     }, []);
 
-    console.log("Current user role:", userRole);
+    useEffect(() => {
+        console.log("User role updated:", userRole);
+    }, [userRole]);
 
     const handleHomeClick = (e) => {
         e.preventDefault();
@@ -49,6 +51,15 @@ function BasicExample() {
         }
     };
 
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("userRole");
+        setToken("");
+        setHasToken(false);
+        setUserRole("");
+        navigate("/");
+    };
+
     return (
         <Navbar expand="lg" className="bg-body-tertiary">
             <Container>
@@ -58,14 +69,15 @@ function BasicExample() {
                     <Nav className="me-auto">
                         <Nav.Link onClick={handleHomeClick}>Home</Nav.Link>
                         {hasToken ?
-                            <Nav.Link href="login">Logout</Nav.Link> :
+                            <Nav.Link onClick={handleLogout}>Logout</Nav.Link> :
                             <Nav.Link href="LogIn">Login</Nav.Link>
                         }
                     </Nav>
                 </Navbar.Collapse>
             </Container>
+            <div>Current User Role: {userRole}</div>
         </Navbar>
     );
 }
 
-export default BasicExample;
+export default NavigationBar;
