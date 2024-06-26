@@ -62,28 +62,35 @@ function CreateClass(props) {
         setNumber(e.target.value);
     }
 
-    function createClass() {
-        if(!selectedLecturer){
-            alert("Please assign a lecturer to the class");
-            return;
-        }
-        axios.post(`${baseUrl}Ass2/classes/`, {
-            number: number,
-            course: selectedCourse,
-            semester: selectedSemester,
-            lecturer: selectedLecturer,
-            students: selectedStudents
-        }, {
-            headers: {
-                'Authorization': `Token ${token}`
-            }
-        }).then(response => {
-            alert("Class created successfully");
-            navigate("/Class");
-            window.location.reload();
-            console.log(response.data);
-        });
+function createClass() {
+    if(!selectedLecturer){
+        alert("Please assign a lecturer to the class");
+        return;
     }
+    const classData = {
+        number: number,
+        course: selectedCourse,
+        semester: selectedSemester,
+        lecturer: selectedLecturer,
+        students: selectedStudents
+    };
+    console.log("Sending data:", classData); // 打印要发送的数据
+
+    axios.post(`${baseUrl}Ass2/classes/`, classData, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Token ${token}`
+        }
+    }).then(response => {
+        alert("Class created successfully");
+        navigate("/Class");
+        window.location.reload();
+        console.log(response.data);
+    }).catch(error => {
+        console.error("Error creating class:", error.response?.data || error.message);
+        alert("Failed to create class. Please check the console for details.");
+    });
+}
 
     return (
         <div>
