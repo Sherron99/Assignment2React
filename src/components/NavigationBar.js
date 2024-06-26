@@ -12,13 +12,18 @@ function BasicExample() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if(localStorage.getItem("token")) {
-            setToken(localStorage.getItem("token"));
+        const storedToken = localStorage.getItem("token");
+        const storedUserRole = localStorage.getItem("userRole");
+        console.log("Stored token:", storedToken);
+        console.log("Stored user role:", storedUserRole);
+        if(storedToken) {
+            setToken(storedToken);
             setHasToken(true);
-            // Assuming you store the user role in localStorage as well
-            setUserRole(localStorage.getItem("userRole"));
+            setUserRole(storedUserRole);
         }
-    }, [token]);
+    }, []);
+
+        console.log("Current user role:", userRole);
 
 const handleHomeClick = (e) => {
     e.preventDefault();

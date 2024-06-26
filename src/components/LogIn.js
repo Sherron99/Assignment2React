@@ -158,6 +158,7 @@ function LogIn(props) {
             console.log(response);
             localStorage.removeItem("token");
             localStorage.removeItem("id");
+            localStorage.removeItem("userRole");
             setToken("");
             setHasToken(false);
             navigate("/");
