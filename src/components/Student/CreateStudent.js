@@ -31,7 +31,7 @@ function CreateStudent(props) {
 
         const user = {
             username: firstName + lastName,
-            password: DOB,
+            password: "unitec123",
             first_name: firstName,
             last_name: lastName,
             email: email,

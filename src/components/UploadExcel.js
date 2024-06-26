@@ -34,7 +34,7 @@ const UploadExcel = () => {
       for (const student of data) {
         const user = {
           username: student.firstName + student.lastName,
-          password: student.DOB,
+          password: "unitec123",
           first_name: student.firstName,
           last_name: student.lastName,
           email: student.email,
